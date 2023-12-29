@@ -9,8 +9,8 @@ import Repos from './Repos';
 import LoadingScreen from './LoadingScreen';
 
 const GET_TRENDING_REPOS = gql`
-  query GetTrendingRepos($lang: String!) {
-    search(query: $lang,type: REPOSITORY, first: 30) {
+  query GetTrendingRepos($query: String!) {
+    search(query: $query,type: REPOSITORY, first: 15) {
         edges {
           node {
             ... on Repository {
@@ -18,6 +18,7 @@ const GET_TRENDING_REPOS = gql`
               name
               description
               stargazerCount
+              createdAt
               forkCount
               diskUsage
               homepageUrl
@@ -38,11 +39,14 @@ const GET_TRENDING_REPOS = gql`
 `;
 
 const GitHubSearch = ({ lang }) => {
+  const afterDate = '2023-01-01';
   const { loading, error, data } = useQuery(GET_TRENDING_REPOS, {
-    variables: { lang },
+    variables: {
+      query: `language:${lang} stars:>=200 created:>${afterDate}`
+    },
   });
+  
   const [repos, setRepos] = useState([]);
-
   useEffect(() => {
     if (!loading && data) {
       const sortedRepos = data.search.edges

@@ -6,7 +6,7 @@ import GitHubSearch from './GitHubSearch';
 const httpLink = createHttpLink({
     uri: 'https://api.github.com/graphql',
     headers: {
-      Authorization: 'Bearer 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', // Remplace avec ton propre token GitHub
+      Authorization: 'Bearer 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', // Remplace avec ton propre token GitHub
     },
 });
 
